@@ -1,3 +1,3 @@
 # Pixsim
 
-![Screenshot](UI.svg)
+![Screenshot](UI.png)
