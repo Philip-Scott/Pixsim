@@ -22,6 +22,7 @@ public class Board : Grid {
 			Light_Matrix[i,j] = new Light (); 
 			this.attach (Light_Matrix[i,j], j, i, 1, 1);
 		}}
+		this.show_all ();
 	}
 
 }}

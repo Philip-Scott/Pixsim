@@ -3,8 +3,9 @@ using Math;
 using Granite.Services;
 
 //valac-0.26 --pkg gtk+-3.0 --pkg granite --thread --target-glib 2.32 src/window.vala src/light.vala src/board.vala 
+
 //This is how we link up the program to a c function
-//extern int cfunction(); 
+extern int logic (); 
 
 namespace Pixsim {
 public HeaderBar headerbar;
@@ -13,11 +14,12 @@ public HbButton solve_button;
 public CssProvider custom_css;
 public MoveCounter moves;
 public Button about_button;
+
 public class App : Gtk.Window {
 	public App () {
 		headerbar = new HeaderBar ();
 		headerbar.title = "Pixsim";
- 		headerbar.show_close_button = true;
+ 		headerbar.show_close_button = false;
 		this.set_titlebar (headerbar);
 		this.destroy.connect(Gtk.main_quit);
 		this.set_size_request (100,300);
@@ -29,19 +31,29 @@ public class App : Gtk.Window {
 		
 		var actionbar = new ActionBar ();
 		var main_grid = new Grid ();
-		var placeholder = new Button.with_label ("PLACE HOLDER"); //Generate board here
+		var board = new Board (3,5);
 		about_button = new Button.from_icon_name ("help-info-symbolic", IconSize.BUTTON);
 		moves = new MoveCounter ();
 		main_grid.set_orientation (Orientation.VERTICAL);
-		main_grid.add (placeholder);
+		main_grid.add (board);
 		main_grid.add (actionbar);
 		actionbar.set_center_widget (moves);
 		actionbar.pack_end (about_button);
 		this.add (main_grid);
-		
 		var about = new About ();
+		headerbar.set_decoration_layout ("");
+		var close_button = new Button ();
+		var close_label = new Label (" <b>x</b> ");
+		close_button.add (close_label);
+		close_label.set_use_markup (true);
+		close_button.get_style_context ().add_class ("close");
+		close_label.get_style_context ().add_class ("close");
+		headerbar.pack_start (close_button);
 		
-		
+		close_button.clicked.connect (() => {
+			this.destroy ();
+		});
+				
 		moves.changed.connect (() => {
 			undo_button.check_undos ();
 		});
@@ -51,8 +63,8 @@ public class App : Gtk.Window {
 		
 		actionbar.set_hexpand (true);
 		actionbar.set_hexpand_set (true);
-		placeholder.set_vexpand (true);
-		placeholder.set_vexpand_set (true);
+		board.set_vexpand (true);
+		board.set_vexpand_set (true);
 		
 		custom_css = new CssProvider ();
 		var css_file = @"/home/$user/Code/Pixsim/custom.css";
@@ -67,7 +79,7 @@ public class About : Gtk.Popover {
 	public About () {
 		var title = 	new Label ("Pixsim");
 		var subtitle = 	new Label ("\"Simpix\" clone for linux\nwritten in C and Vala");
-		var team = 		new Label ("By: \n- Felipe Bojorges\n- Felipe Escoto\n- Fernando Villanueva");
+		var team = 		new Label ("By: \n- Felipe Bojorquez\n- Felipe Escoto\n- Fernando Villanueva");
 		var grid = 		new Grid ();
 		grid.set_orientation (Orientation.VERTICAL);
 		grid.set_row_spacing (4);
@@ -138,7 +150,7 @@ public class HbButton : Button {
 	}
 	
 	public HbButton.Undo () {
-		this.commons ("Undo");
+		this.commons (" Undo");
 		this.get_style_context ().add_class (@"button-left");
 		this.clicked.connect (() => {
 			moves.change_user (moves.user_steps.label.to_int () - 1);
@@ -146,7 +158,7 @@ public class HbButton : Button {
 		});
 	}
 	public HbButton.Solve () {
-		this.commons ("Solve");
+		this.commons ("Solve ");
 		this.get_style_context ().add_class (@"button-right");
 		this.clicked.connect (() => {
 			//TODO: Connect to C Function

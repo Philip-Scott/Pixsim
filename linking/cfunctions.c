@@ -1,10 +1,11 @@
 #include <stdio.h>
-#define array *(matrix + j + y * i)
+#define array *(matrix + j + y * i) //Go to (i,j)
 
 int x;
 int y;
 int* matrix;
 
+//Prepare enviroment variables. 
 int setup (int *set_matrix, int set_y, int set_x) {
 	x = set_x;
 	y = set_y;
