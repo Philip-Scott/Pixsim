@@ -1,1 +1,1 @@
-valac-0.26 --pkg gtk+-3.0 --pkg granite --thread --target-glib 2.32 src/window.vala src/lights.vala src/board.vala src/user_string.vala -o Pixsim && ./Pixsim
+valac-0.26 --pkg gtk+-3.0 --pkg granite --thread --target-glib 2.32 src/window.vala src/lights.vala src/board.vala src/user_string.vala src/setup.c src/populate.c src/undo.c src/clicked.c src/autosolve.c -o Pixsim && ./Pixsim
