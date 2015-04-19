@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "pixsim.h"
+#include "pilas.h"
 
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
@@ -7,6 +8,8 @@
 //TODO Save clicks to stack
 int click (int j, int k) {
 	//Debug 
+	push(&movesj,j);
+	push(&movesk,k);
 	
 	printf ("Clicked: x: %d y: %d\n",j,k);
 	/*  j,k (1,2)
