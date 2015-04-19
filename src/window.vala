@@ -31,7 +31,7 @@ public class App : Gtk.Window {
 		
 		var actionbar = new ActionBar ();
 		var main_grid = new Grid ();
-		var board = new Board (3,5);
+		var board = new Board (6,8);
 		about_button = new Button.from_icon_name ("help-info-symbolic", IconSize.BUTTON);
 		moves = new MoveCounter ();
 		main_grid.set_orientation (Orientation.VERTICAL);
@@ -72,7 +72,7 @@ public class App : Gtk.Window {
 		Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), custom_css, Gtk.STYLE_PROVIDER_PRIORITY_USER);
 		custom_css.load_from_path (css_file);
 		this.show_all ();
-	}		
+	}			
 }
 
 public class About : Gtk.Popover {
