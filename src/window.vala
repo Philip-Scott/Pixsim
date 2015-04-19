@@ -67,7 +67,7 @@ public class App : Gtk.Window {
 		board.set_vexpand_set (true);
 		
 		custom_css = new CssProvider ();
-		var css_file = @"/home/$user/Code/Pixsim/custom.css";
+		var css_file = @"$user/custom.css";
 		Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = true;
 		Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), custom_css, Gtk.STYLE_PROVIDER_PRIORITY_USER);
 		custom_css.load_from_path (css_file);
