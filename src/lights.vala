@@ -16,6 +16,13 @@ public class Light : Gtk.ToggleButton {
 		this.clicked.connect (() => {
 			theme ();
 			click (x,y);
+			
+			for (int i = 0; i < 4; i++) { 
+			for (int j = 0; j < 3; j++) {
+				stdout.printf (@"$(Value_Matrix[i,j]) ");
+			}
+				stdout.printf ("\n");
+			}
 		});
 	}
 	

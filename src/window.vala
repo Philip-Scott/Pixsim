@@ -31,7 +31,7 @@ public class App : Gtk.Window {
 		
 		var actionbar = new ActionBar ();
 		var main_grid = new Grid ();
-		var board = new Board (6,8);
+		var board = new Board (3,4);
 		about_button = new Button.from_icon_name ("help-info-symbolic", IconSize.BUTTON);
 		moves = new MoveCounter ();
 		main_grid.set_orientation (Orientation.VERTICAL);
