@@ -165,7 +165,8 @@ public class HbButton : Button {
 		this.clicked.connect (() => {
 			moves.change_user (moves.user_steps.label.to_int () - 1);
 			undo ();
-			board.Update ();gi
+			board.Update ();
+		});
 	}
 	public HbButton.Solve () {
 		this.commons ("Solve ");
