@@ -2,20 +2,30 @@
 #include "pixsim.h"
 #include "pilas.h"
 
+struct Pila* movesj;
+struct Pila* movesk;
+
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
 //TODO Program funcion
 //TODO Save clicks to stack
-int click (int j, int k) {
-	//Debug 
-	push(&movesj,j);
-	push(&movesk,k);
+int undo () {
+	int j,k;
+	j = pop(&movesj);
+	k = pop(&movesk);	
+	click(j,k,1);	
 	
+	return 1;	
+}
+
+int click (int j, int k, int undo) {
+	//Debug 
+	if (undo == 0) {
+		push(&movesj,j);
+		push(&movesk,k);
+	}
 	printf ("Clicked: x: %d y: %d\n",j,k);
-	/*  j,k (1,2)
-	0 0 0 0 0 0 0 0	0 * 0 0
-	matrix + 1 + y * 2
-	*/
+
 	if(*(matrix + j + x * k) == 1) //Cambiar el color del cuadro en el que se dio click
 		*(matrix + j + x * k) = 0;
 	else

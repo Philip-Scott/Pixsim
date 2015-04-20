@@ -2,7 +2,7 @@ using Gtk;
 using Math;
 using Granite.Services;
 
-extern int click (int x, int y);
+extern int click (int x, int y, int undo);
 
 namespace Pixsim {
 public class Light : Gtk.Button {
@@ -16,11 +16,11 @@ public class Light : Gtk.Button {
 		set_size_request (90,90);
 		this.clicked.connect (() => {
 			theme ();
-			click (x,y);			
+			click (x,y,0);			
 			board.Light_Clicked ();
 		});
 		
-		board.Light_Clicked.connect (() => {
+		board.Update.connect (() => {
 			if (Value_Matrix[y,x] == 1) this.active = (true);
 			else this.active = (false);
 			theme ();

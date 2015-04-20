@@ -5,7 +5,7 @@ using Granite.Services;
 //valac-0.26 --pkg gtk+-3.0 --pkg granite --thread --target-glib 2.32 src/window.vala src/light.vala src/board.vala 
 
 //This is how we link up the program to a c function
-extern int logic (); 
+extern int undo (); 
 
 namespace Pixsim {
 public HeaderBar headerbar;
@@ -14,6 +14,7 @@ public HbButton solve_button;
 public CssProvider custom_css;
 public MoveCounter moves;
 public Button about_button;
+public Board board;
 
 public class App : Gtk.Window {
 	public App () {
@@ -31,7 +32,7 @@ public class App : Gtk.Window {
 		
 		var actionbar = new ActionBar ();
 		var main_grid = new Grid ();
-		var board = new Board (3,4);
+		board = new Board (4,4);
 		about_button = new Button.from_icon_name ("help-info-symbolic", IconSize.BUTTON);
 		moves = new MoveCounter ();
 		main_grid.set_orientation (Orientation.VERTICAL);
@@ -57,9 +58,16 @@ public class App : Gtk.Window {
 		moves.changed.connect (() => {
 			undo_button.check_undos ();
 		});
+		
+		board.Light_Clicked.connect (() => {
+			moves.change_user (moves.user_steps.label.to_int () + 1);
+			undo_button.check_undos ();
+		});
+		
 		about_button.clicked.connect (() => {
 			about.visible = true;;
 		});
+		
 		
 		actionbar.set_hexpand (true);
 		actionbar.set_hexpand_set (true);
@@ -110,7 +118,7 @@ public class MoveCounter : Grid {
 		this.set_orientation (Orientation.HORIZONTAL);
 		var slash = new Label (" / ");
 		gen_steps = new Label ("5"); 	//Place Holder
-		user_steps = new Label ("2");		//Place Holder
+		user_steps = new Label ("0");		//Place Holder
 		gen_steps.get_style_context ().add_class ("counter");
 		user_steps.get_style_context ().add_class ("counter");
 		slash.get_style_context ().add_class ("slash");
@@ -145,6 +153,8 @@ public class HbButton : Button {
 	public int check_undos () {
 		if (moves.user_steps.label == "0") {
 			this.set_sensitive (false);
+		} else {
+			this.set_sensitive (true);
 		}
 		return 0;
 	}
@@ -154,8 +164,8 @@ public class HbButton : Button {
 		this.get_style_context ().add_class (@"button-left");
 		this.clicked.connect (() => {
 			moves.change_user (moves.user_steps.label.to_int () - 1);
-			//TODO: Connect to C Function
-		});
+			undo ();
+			board.Update ();gi
 	}
 	public HbButton.Solve () {
 		this.commons ("Solve ");

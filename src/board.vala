@@ -13,6 +13,7 @@ public Light[,] Light_Matrix;
 public class Board : Grid {
 
 	public signal void Light_Clicked ();
+	public signal void Update ();
 		
 	public Board (int x = 3, int y = 3) {
 		set_row_spacing (4);
@@ -35,6 +36,10 @@ public class Board : Grid {
 		for (int j = 0; j < y; j++) {
 			Value_Matrix[i,j] = 0;
 		}}
+		
+		Light_Clicked.connect (() => {
+			Update ();
+		});
 		
 		setup (Value_Matrix); 
  		populate ();
