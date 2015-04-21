@@ -4,28 +4,42 @@
 
 struct Pila* movesj;
 struct Pila* movesk;
-
+int movimientos = 0;
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
 //TODO Program funcion
 //TODO Save clicks to stack
 int undo () {
 	int j,k;
-	j = pop(&movesj);
-	k = pop(&movesk);	
-	click(j,k,1);	
 	
-	return 1;	
+	if(!isEmpty(movesj) && !isEmpty(movesk)){
+		j = pop(&movesj);
+		k = pop(&movesk);	
+		click(j,k,1);
+		movimientos--;	
+	}
+	
+	return 1;
+
 }
 
 int click (int j, int k, int undo) {
 	//Debug 
 	if (undo == 0) {
-		push(&movesj,j);
-		push(&movesk,k);
+		if(top(movesj) != j && top(movesk) != k){
+			push(&movesj,j);
+			push(&movesk,k);
+			movimientos++;
+		}
+		else{
+			pop(&movesj);
+			pop(&movesk);
+			movimientos--;
+		}
 	}
+	
 	printf ("Clicked: x: %d y: %d\n",j,k);
-
+	
 	if(*(matrix + j + x * k) == 1) //Cambiar el color del cuadro en el que se dio click
 		*(matrix + j + x * k) = 0;
 	else
@@ -68,4 +82,6 @@ int click (int j, int k, int undo) {
 	}  
 	printf ("\n");
 	printf ("\n");
+	
+	return movimientos;
 }
