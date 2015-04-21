@@ -16,7 +16,7 @@ public class Light : Gtk.Button {
 		set_size_request (90,90);
 		this.clicked.connect (() => {
 			theme ();
-			click (x,y,0);			
+			board.moves = click (x,y,0);			
 			board.Light_Clicked ();
 		});
 		

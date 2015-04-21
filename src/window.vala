@@ -133,7 +133,7 @@ public class MoveCounter : Grid {
 	}
 	
 	public void change_user (int a) {
-		user_steps.label = @"$a";
+		user_steps.label = @"$(board.moves)";
 		changed ();
 	}
 	

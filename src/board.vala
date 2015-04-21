@@ -11,7 +11,7 @@ public Light[,] Light_Matrix;
 
 
 public class Board : Grid {
-
+	public int moves = 0;
 	public signal void Light_Clicked ();
 	public signal void Update ();
 		
