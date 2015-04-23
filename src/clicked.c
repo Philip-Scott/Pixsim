@@ -26,7 +26,7 @@ int undo () {
 int click (int j, int k, int undo) {
 	//Debug 
 	if (undo == 0) {
-		if(top(movesj) != j && top(movesk) != k){
+		if(top(movesj) != j || top(movesk) != k){
 			push(&movesj,j);
 			push(&movesk,k);
 			movimientos++;
