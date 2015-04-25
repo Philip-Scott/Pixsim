@@ -51,6 +51,9 @@ public class App : Gtk.Window {
 		close_label.get_style_context ().add_class ("close");
 		headerbar.pack_start (close_button);
 		
+		var new_game_button = new NewGameButton ();
+
+		
 		close_button.clicked.connect (() => {
 			this.destroy ();
 		});
@@ -65,7 +68,7 @@ public class App : Gtk.Window {
 		});
 		
 		about_button.clicked.connect (() => {
-			about.visible = true;;
+			about.visible = true;
 		});
 		
 		
@@ -109,6 +112,83 @@ public class About : Gtk.Popover {
 	}
 }
 
+public class NewGameDialog : Gtk.Dialog { //New device dialog
+	public signal void new_game ();	
+	public Scale setup_x;
+	public Scale setup_y;
+	
+	protected override bool delete_event (Gdk.EventAny event) {
+		this.hide(); 	
+		return true;		
+	}
+	
+	public NewGameDialog () {
+		this.remove (this.get_child ());
+		this.set_border_width (12);
+		var title 			= new Label ("<b>New Game: </b>");
+		var width_label 	= new Label ("Width: ");
+		var hight_label 	= new Label ("Hight: ");
+		title.set_use_markup (true);
+		title.xalign = 0;
+		width_label.xalign = 0;
+		hight_label.xalign = 0;
+		
+		set_keep_above (true);
+		set_size_request (420, 300);
+		resizable = false;
+		
+		var x_values = new Adjustment (3, 1, 10, 1, 1, 1);
+		var y_values = new Adjustment (3, 1, 10, 1, 1, 1);
+	 	var grid = new Grid ();
+	 	setup_x = new Scale (Orientation.HORIZONTAL, x_values);	
+        setup_y = new Scale (Orientation.HORIZONTAL, y_values);
+        setup_y.set_size_request (10,40);
+        setup_x.set_draw_value (false);
+        setup_y.set_draw_value (false);
+	 	grid.attach (title,				0,  0,  1,  1);
+		grid.attach (width_label, 		0,	1, 	1,	1);
+		grid.attach (setup_x,  			1,	1, 	2,	1);
+		grid.attach (hight_label, 		0,	2, 	1,	1);
+		grid.attach (setup_y,  			1,	2, 	2,	1);
+
+        this.add (grid);
+        grid.set_column_homogeneous (true);
+		grid.set_row_homogeneous (true);
+		grid.row_spacing = 12;
+		grid.set_column_spacing (5);
+		grid.show_all ();       
+
+	}
+}
+
+public class NewGameButton : Grid {
+	public Button new_game_button;
+	public Button setup_button;
+	public NewGameDialog new_game_menu;
+	
+	public NewGameButton () {
+		this.get_style_context ().add_class ("linked");
+		this.set_orientation (Orientation.HORIZONTAL);
+		var arrow = new Arrow (ArrowType.DOWN, ShadowType.NONE);
+		new_game_menu = new NewGameDialog ();
+		//new_game_menu.set_relative_to (setup_button);
+		arrow.get_style_context ().add_class ("close");
+		new_game_button = new Button.with_label ("New Game");
+		setup_button = new Button ();
+		setup_button.add (arrow);
+		
+		this.add (new_game_button);
+		this.add (setup_button);
+		
+		this.setup_button.clicked.connect (() => {
+			new_game_menu.visible = true;
+		});
+		
+		headerbar.pack_start (this);
+	}
+
+}
+
 public class MoveCounter : Grid {
 	public Label gen_steps;
 	public Label user_steps;
@@ -132,7 +212,7 @@ public class MoveCounter : Grid {
 		this.set_margin_right (12);
 	}
 	
-	public void change_user (int a) {
+	public void change_user (int a = 0) {
 		user_steps.label = @"$(board.moves)";
 		changed ();
 	}
@@ -163,11 +243,12 @@ public class HbButton : Button {
 		this.commons (" Undo");
 		this.get_style_context ().add_class (@"button-left");
 		this.clicked.connect (() => {
-			moves.change_user (moves.user_steps.label.to_int () - 1);
-			undo ();
+			board.moves = undo ();
+			moves.change_user ();
 			board.Update ();
 		});
 	}
+		
 	public HbButton.Solve () {
 		this.commons ("Solve ");
 		this.get_style_context ().add_class (@"button-right");

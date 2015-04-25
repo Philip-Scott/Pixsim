@@ -19,7 +19,7 @@ int undo () {
 		movimientos--;	
 	}
 	
-	return 1;
+	return movimientos;
 
 }
 
