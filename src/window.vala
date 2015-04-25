@@ -125,6 +125,7 @@ public class NewGameDialog : Gtk.Dialog { //New device dialog
 	public NewGameDialog () {
 		this.remove (this.get_child ());
 		this.set_border_width (12);
+		this.set_modal (true);
 		var title 			= new Label ("<b>New Game: </b>");
 		var width_label 	= new Label ("Width: ");
 		var hight_label 	= new Label ("Hight: ");
