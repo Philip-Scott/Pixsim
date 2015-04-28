@@ -3,7 +3,7 @@ using Math;
 using Granite.Services;
 
 extern int setup(int[,] a);
-extern int populate ();
+extern int populate (int dificulty);
 
 namespace Pixsim {
 public int[,] Value_Matrix;
@@ -11,11 +11,17 @@ public Light[,] Light_Matrix;
 
 
 public class Board : Grid {
-	public int moves = 0;
+	public int user_moves = 0;
 	public signal void Light_Clicked ();
 	public signal void Update ();
-		
-	public Board (int x = 3, int y = 3) {
+	public int x;
+	public int y;
+	public int dificulty;
+	
+	public Board (int x_ = 3, int y_ = 3, int dificulty_ = 5) {
+	    x = x_;
+	    y = y_;
+	    dificulty = dificulty_;
 		set_row_spacing (4);
 		set_column_spacing (4);
 		set_row_homogeneous  (true);
@@ -39,10 +45,12 @@ public class Board : Grid {
 		
 		Light_Clicked.connect (() => {
 			Update ();
+			moves.change_user (this.user_moves);
 		});
 		
 		setup (Value_Matrix); 
- 		populate ();
+ 		populate (dificulty);
+ 		Update ();
 		this.show_all ();
 	}
 

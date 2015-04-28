@@ -16,8 +16,9 @@ public class Light : Gtk.Button {
 		set_size_request (90,90);
 		this.clicked.connect (() => {
 			theme ();
-			board.moves = click (x,y,0);			
+			board.user_moves = click (x,y,0);			
 			board.Light_Clicked ();
+			moves.change_user (board.user_moves);
 		});
 		
 		board.Update.connect (() => {
@@ -28,7 +29,6 @@ public class Light : Gtk.Button {
 	}
 	
 	public void update () {
-		
 		theme ();
 	}
 	

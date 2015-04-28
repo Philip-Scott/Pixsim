@@ -9,9 +9,43 @@ int movimientos = 0;
 //User clicked on (j,k) 
 //TODO Program funcion
 //TODO Save clicks to stack
+
+//Setup enviroment variables
+int setup (int *set_matrix, int set_y, int set_x) {
+    
+    while (!isEmpty(movesj)) {
+        pop (&movesj);
+    }
+    
+    while (!isEmpty(movesk)) {
+        pop (&movesk);
+    }
+    
+	x = set_x;
+	y = set_y;
+	matrix = set_matrix;
+	movimientos = 0;	
+	printf ("C DEBUG: X = %d, Y = %d,\n", x, y);
+ 	return 0;
+}
+
+//Setup game
+int populate (int moves) {
+	int i, j, a;
+	for(i = 0; i < y; i++) { // X Axis
+	for (j = 0; j < x; j++) { // Y Axis
+		array = 1;
+	}}  
+	
+	srand(time(NULL));
+    for (a = 0; a < moves; a++) {
+
+	    click (rand() % x, rand() % y, 1);
+    }
+}
+
 int undo () {
 	int j,k;
-	
 	if(!isEmpty(movesj) && !isEmpty(movesk)){
 		j = pop(&movesj);
 		k = pop(&movesk);	
@@ -34,7 +68,6 @@ int click (int j, int k, int undo) {
 		else{
 			pop(&movesj);
 			pop(&movesk);
-			movimientos--;
 		}
 	}
 	

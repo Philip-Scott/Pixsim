@@ -12,9 +12,12 @@ public HeaderBar headerbar;
 public HbButton undo_button;
 public HbButton solve_button;
 public CssProvider custom_css;
+public NewGameDialog new_game_menu;
 public MoveCounter moves;
 public Button about_button;
 public Board board;
+public ActionBar actionbar;
+public Grid main_grid;
 
 public class App : Gtk.Window {
 	public App () {
@@ -30,14 +33,14 @@ public class App : Gtk.Window {
 		headerbar.pack_end (solve_button);
 		headerbar.pack_end (undo_button);
 		
-		var actionbar = new ActionBar ();
-		var main_grid = new Grid ();
-		board = new Board (4,4);
+		actionbar = new ActionBar ();
+		main_grid = new Grid ();
+		
 		about_button = new Button.from_icon_name ("help-info-symbolic", IconSize.BUTTON);
 		moves = new MoveCounter ();
+		
 		main_grid.set_orientation (Orientation.VERTICAL);
-		main_grid.add (board);
-		main_grid.add (actionbar);
+		
 		actionbar.set_center_widget (moves);
 		actionbar.pack_end (about_button);
 		this.add (main_grid);
@@ -52,7 +55,8 @@ public class App : Gtk.Window {
 		headerbar.pack_start (close_button);
 		
 		var new_game_button = new NewGameButton ();
-
+        start_game ();
+        main_grid.add (actionbar); 
 		
 		close_button.clicked.connect (() => {
 			this.destroy ();
@@ -83,6 +87,25 @@ public class App : Gtk.Window {
 		Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), custom_css, Gtk.STYLE_PROVIDER_PRIORITY_USER);
 		custom_css.load_from_path (css_file);
 		this.show_all ();
+		
+		
+        new_game_menu.new_game.connect ((x,y,dificulty) => {
+            start_game (x,y,dificulty);
+            
+        });
+	}
+	
+	public void start_game (int x = 4, int y = 4, int dificulty = 5) {
+	    board.destroy ();
+ 	    board = new Board (x,y,dificulty);
+ 	    board.set_vexpand (true);
+		board.set_vexpand_set (true);
+ 	    
+ 	    moves.change_generated (dificulty);
+	    moves.change_user (0);
+	    main_grid.attach (board,0,1,1,1);
+		
+		this.resize (100,300);
 	}			
 }
 
@@ -111,11 +134,13 @@ public class About : Gtk.Popover {
 		grid.show_all ();
 	}
 }
-
-public class NewGameDialog : Gtk.Dialog { //New device dialog
-	public signal void new_game ();	
+ //New device dialog
+public class NewGameDialog : Gtk.Dialog {
+	public signal void new_game (int x, int y, int dificulty);
 	public Scale setup_x;
 	public Scale setup_y;
+	public Scale dificulty;
+	public Gtk.Button start;
 	
 	protected override bool delete_event (Gdk.EventAny event) {
 		this.hide(); 	
@@ -129,6 +154,8 @@ public class NewGameDialog : Gtk.Dialog { //New device dialog
 		var title 			= new Label ("<b>New Game: </b>");
 		var width_label 	= new Label ("Width: ");
 		var hight_label 	= new Label ("Hight: ");
+		var dificulty_label = new Label ("Dificulty");
+		
 		title.set_use_markup (true);
 		title.xalign = 0;
 		width_label.xalign = 0;
@@ -138,41 +165,61 @@ public class NewGameDialog : Gtk.Dialog { //New device dialog
 		set_size_request (420, 300);
 		resizable = false;
 		
-		var x_values = new Adjustment (3, 1, 10, 1, 1, 1);
-		var y_values = new Adjustment (3, 1, 10, 1, 1, 1);
-	 	var grid = new Grid ();
+		var x_values = new Adjustment (4, 4, 7, 1, 1, 1);
+		var y_values = new Adjustment (4, 4, 8, 1, 1, 1);
+		var dificulty_values = new Adjustment (3, 1, 51, 1, 1, 1);
+			 	
 	 	setup_x = new Scale (Orientation.HORIZONTAL, x_values);	
         setup_y = new Scale (Orientation.HORIZONTAL, y_values);
+        dificulty = new Scale (Orientation.HORIZONTAL, dificulty_values);
+        
+        setup_x.set_digits (0);
+        setup_y.set_digits (0);
+        dificulty.set_digits (0);
+        
         setup_y.set_size_request (10,40);
-        setup_x.set_draw_value (false);
-        setup_y.set_draw_value (false);
-	 	grid.attach (title,				0,  0,  1,  1);
-		grid.attach (width_label, 		0,	1, 	1,	1);
-		grid.attach (setup_x,  			1,	1, 	2,	1);
-		grid.attach (hight_label, 		0,	2, 	1,	1);
-		grid.attach (setup_y,  			1,	2, 	2,	1);
-
+        setup_x.set_value_pos (PositionType.LEFT);
+        setup_y.set_value_pos (PositionType.LEFT);
+        dificulty.set_value_pos (PositionType.LEFT);
+        
+		start = new Button.with_label ("Start");
+		
+		start.clicked.connect (() => {
+		    new_game ((int) x_values.value,(int) y_values.value, (int) dificulty_values.value);
+		    this.hide ();
+		});
+		
+	 	var grid = new Grid ();
+        
+	 	grid.attach (title,			0,  0,  1,  1);
+		grid.attach (width_label, 	0,	1, 	1,	1);
+		grid.attach (setup_x,  		1,	1, 	2,	1);
+		grid.attach (hight_label, 	0,	2, 	1,	1);
+		grid.attach (setup_y,  		1,	2, 	2,	1);
+		grid.attach (dificulty_label,0, 3,  1,  1);
+		grid.attach (dificulty,  	1,	3, 	2,	1);
+        grid.attach (start,         2,  4,  1,  1);
+        
         this.add (grid);
+        
         grid.set_column_homogeneous (true);
 		grid.set_row_homogeneous (true);
 		grid.row_spacing = 12;
 		grid.set_column_spacing (5);
-		grid.show_all ();       
-
+		grid.show_all ();           
 	}
 }
 
 public class NewGameButton : Grid {
 	public Button new_game_button;
 	public Button setup_button;
-	public NewGameDialog new_game_menu;
-	
+		
 	public NewGameButton () {
 		this.get_style_context ().add_class ("linked");
 		this.set_orientation (Orientation.HORIZONTAL);
 		var arrow = new Arrow (ArrowType.DOWN, ShadowType.NONE);
 		new_game_menu = new NewGameDialog ();
-		//new_game_menu.set_relative_to (setup_button);
+
 		arrow.get_style_context ().add_class ("close");
 		new_game_button = new Button.with_label ("New Game");
 		setup_button = new Button ();
@@ -183,6 +230,10 @@ public class NewGameButton : Grid {
 		
 		this.setup_button.clicked.connect (() => {
 			new_game_menu.visible = true;
+		});
+		
+		this.new_game_button.clicked.connect (() => {
+    		new_game_menu.new_game (board.x, board.y, board.dificulty);
 		});
 		
 		headerbar.pack_start (this);
@@ -214,7 +265,7 @@ public class MoveCounter : Grid {
 	}
 	
 	public void change_user (int a = 0) {
-		user_steps.label = @"$(board.moves)";
+		user_steps.label = @"$a";
 		changed ();
 	}
 	
@@ -244,8 +295,8 @@ public class HbButton : Button {
 		this.commons (" Undo");
 		this.get_style_context ().add_class (@"button-left");
 		this.clicked.connect (() => {
-			board.moves = undo ();
-			moves.change_user ();
+			board.user_moves = undo ();
+			moves.change_user (board.user_moves);
 			board.Update ();
 		});
 	}
