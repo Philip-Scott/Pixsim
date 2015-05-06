@@ -307,7 +307,10 @@ public class HbButton : Button {
 		this.commons ("Solve ");
 		this.get_style_context ().add_class (@"button-right");
 		this.clicked.connect (() => {
-			//TODO: Connect to C Function
+			if (board.user_moves == 0 && moves.gen_steps.label.to_int () > 0)  {
+				moves.change_generated (solve ());
+				board.Update ();
+			}
 		});
 	}
 }

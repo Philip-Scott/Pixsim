@@ -48,6 +48,11 @@ public class Board : Grid {
 			moves.change_user (this.user_moves);
 		});
 		
+		this.Update.connect (() => {
+			if (user_moves != 0) solve_button.label = "Reset";
+			else solve_button.label = "Solve";
+		});
+		
 		setup (Value_Matrix); 
  		populate (dificulty);
  		Update ();

@@ -3,8 +3,8 @@
 #include "pilas.h"
 #include "colas.h"
 
-struct Pila* movesj = NULL;
-struct Pila* movesk = NULL;
+struct Pila* movesj;
+struct Pila* movesk;
 
 struct Cola* stepsj = NULL; //Recordar inicializar pilas y colas a nulo
 struct Cola* stepsk = NULL;
@@ -153,5 +153,5 @@ int solve () {
 
     }
     
-    return pasos;    
+    return --pasos;    
 }
