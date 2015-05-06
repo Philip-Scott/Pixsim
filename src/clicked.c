@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include "pixsim.h"
 #include "pilas.h"
+#include "colas.h"
 
 struct Pila* movesj;
 struct Pila* movesk;
+struct Cola* stepsj = NULL; //Recordar inicializar pilas y colas a nulo
+struct Cola* stepsk = NULL;
 int movimientos = 0;
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
@@ -31,7 +34,7 @@ int setup (int *set_matrix, int set_y, int set_x) {
 
 //Setup game
 int populate (int moves) {
-	int i, j, a;
+	int i, j, a, randomx, randomy;
 	for(i = 0; i < y; i++) { // X Axis
 	for (j = 0; j < x; j++) { // Y Axis
 		array = 1;
@@ -39,8 +42,26 @@ int populate (int moves) {
 	
 	srand(time(NULL));
     for (a = 0; a < moves; a++) {
+        
+        randomx = rand() % x;
+        randomy = rand() % y;
+        q_push(&stepsj, randomx); //Guardo movimientos generados en cola
+        q_push(&stepsk, randomy);
+	    click (randomx, randomy, 1);
+    }
+}
 
-	    click (rand() % x, rand() % y, 1);
+int reset (int moves) { //Con esta función se genera un tablero igual al anterior
+    int i, j, a;
+    for(i = 0; i < y; i++) { // X Axis
+        for (j = 0; j < x; j++) { // Y Axis
+            array = 1;
+        }}
+    
+    //Voy a hacer click usando los movimientos generados en populate guardados en la cola
+    for (a = 0; a < moves; a++) {
+        
+        click (q_pop(stepsj), q_pop(stepsk), 1);
     }
 }
 
