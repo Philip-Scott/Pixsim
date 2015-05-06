@@ -7,6 +7,7 @@ using Granite.Services;
 //This is how we link up the program to a c function
 extern int undo (); 
 extern int solve ();
+extern int reset ();
 
 namespace Pixsim {
 public HeaderBar headerbar;
@@ -310,7 +311,12 @@ public class HbButton : Button {
 			if (board.user_moves == 0 && moves.gen_steps.label.to_int () > 0)  {
 				moves.change_generated (solve ());
 				board.Update ();
+			} else {
+				reset ();
+				moves.change_user (0);
+				board.Update ();
 			}
+			 
 		});
 	}
 }

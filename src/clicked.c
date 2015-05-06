@@ -57,17 +57,8 @@ int populate (int moves) {
     }
 }
 
-int reset (int moves) { //Con esta función se genera un tablero igual al anterior
-    int i, j, a;
-    for(i = 0; i < y; i++) { // X Axis
-        for (j = 0; j < x; j++) { // Y Axis
-            array = 1;
-        }}
-    
-    //Voy a hacer click usando los movimientos generados en populate guardados en la cola
-    for (a = 0; a < 5; a++) {
-        click (1, 1, 1);
-    }
+int reset () { //Con esta función se genera un tablero igual al anterior
+    while (undo ());   
 }
 
 int undo () {
@@ -80,7 +71,6 @@ int undo () {
 	}
 	
 	return movimientos;
-
 }
 
 int click (int j, int k, int undo) {
