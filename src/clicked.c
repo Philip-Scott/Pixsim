@@ -145,7 +145,7 @@ int click (int j, int k, int undo) {
 }
 
 int solve () {
-    while (!isEmpty(solvej) && !isEmpty(solvek)) {
+    if (!isEmpty(solvej) && !isEmpty(solvek)) {
         click(pop(&solvej),pop(&solvek),1);
     }
 }
