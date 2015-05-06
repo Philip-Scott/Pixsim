@@ -7,6 +7,8 @@ struct Pila* movesj;
 struct Pila* movesk;
 struct Cola* stepsj = NULL; //Recordar inicializar pilas y colas a nulo
 struct Cola* stepsk = NULL;
+struct Pila* solvej = NULL;
+struct Pila* solvek = NULL;
 int movimientos = 0;
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
@@ -47,6 +49,8 @@ int populate (int moves) {
         randomy = rand() % y;
         q_push(&stepsj, randomx); //Guardo movimientos generados en cola
         q_push(&stepsk, randomy);
+        push(&solvej, randomx); //Save in a stack
+        push(&solvek, randomy);
 	    click (randomx, randomy, 1);
     }
 }
@@ -138,4 +142,10 @@ int click (int j, int k, int undo) {
 	printf ("\n");
 	
 	return movimientos;
+}
+
+int solve () {
+    while (!isEmpty(solvej) && !isEmpty(solvek)) {
+        click(pop(&solvej),pop(&solvek),1);
+    }
 }
