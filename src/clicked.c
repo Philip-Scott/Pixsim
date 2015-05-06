@@ -5,11 +5,14 @@
 
 struct Pila* movesj = NULL;
 struct Pila* movesk = NULL;
-struct Cola* stepsj = NULL; 
+
+struct Cola* stepsj = NULL; //Recordar inicializar pilas y colas a nulo
 struct Cola* stepsk = NULL;
+
 struct Pila* solvej = NULL;
 struct Pila* solvek = NULL;
 
+int pasos = 0;
 int movimientos = 0;
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
@@ -34,6 +37,8 @@ int setup (int *set_matrix, int set_y, int set_x) {
 
 //Setup game
 int populate (int moves) {
+	pasos = moves;
+
 	int i, j, a, randomx, randomy;
 	for(i = 0; i < y; i++) { // X Axis
 	for (j = 0; j < x; j++) { // Y Axis
@@ -42,7 +47,6 @@ int populate (int moves) {
 	
 	srand(time(NULL));
     for (a = 0; a < moves; a++) {
-        
         randomx = rand() % x;
         randomy = rand() % y;
         q_push(&stepsj, randomx); //Guardo movimientos generados en cola
@@ -61,9 +65,8 @@ int reset (int moves) { //Con esta función se genera un tablero igual al anteri
         }}
     
     //Voy a hacer click usando los movimientos generados en populate guardados en la cola
-    for (a = 0; a < moves; a++) {
-        
-        click (q_pop(stepsj), q_pop(stepsk), 1);
+    for (a = 0; a < 5; a++) {
+        click (1, 1, 1);
     }
 }
 
@@ -144,7 +147,11 @@ int click (int j, int k, int undo) {
 }
 
 int solve () {
-    if (!isEmpty(solvej) && !isEmpty(solvek)) {
+	printf ("Solve\n");
+    if (!q_isEmpty(solvej) && !q_isEmpty(solvek)) {
         click(pop(&solvej),pop(&solvek),1);
+
     }
+    
+    return pasos;    
 }
