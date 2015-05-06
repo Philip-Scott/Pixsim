@@ -3,9 +3,9 @@
 #include "pilas.h"
 #include "colas.h"
 
-struct Pila* movesj;
-struct Pila* movesk;
-struct Cola* stepsj = NULL; //Recordar inicializar pilas y colas a nulo
+struct Pila* movesj = NULL;
+struct Pila* movesk = NULL;
+struct Cola* stepsj = NULL; 
 struct Cola* stepsk = NULL;
 struct Pila* solvej = NULL;
 struct Pila* solvek = NULL;
