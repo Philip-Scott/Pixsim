@@ -9,15 +9,13 @@ struct Cola* stepsj = NULL; //Recordar inicializar pilas y colas a nulo
 struct Cola* stepsk = NULL;
 struct Pila* solvej = NULL;
 struct Pila* solvek = NULL;
+
 int movimientos = 0;
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
-//TODO Program funcion
-//TODO Save clicks to stack
 
 //Setup enviroment variables
 int setup (int *set_matrix, int set_y, int set_x) {
-    
     while (!isEmpty(movesj)) {
         pop (&movesj);
     }
@@ -93,6 +91,7 @@ int click (int j, int k, int undo) {
 		else{
 			pop(&movesj);
 			pop(&movesk);
+			movimientos--;
 		}
 	}
 	

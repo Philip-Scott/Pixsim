@@ -6,6 +6,7 @@ using Granite.Services;
 
 //This is how we link up the program to a c function
 extern int undo (); 
+extern int solve ();
 
 namespace Pixsim {
 public HeaderBar headerbar;
@@ -52,6 +53,7 @@ public class App : Gtk.Window {
 		close_label.set_use_markup (true);
 		close_button.get_style_context ().add_class ("close");
 		close_label.get_style_context ().add_class ("close");
+		headerbar.get_style_context ().add_class ("header-bar-dark");
 		headerbar.pack_start (close_button);
 		
 		var new_game_button = new NewGameButton ();
@@ -165,7 +167,7 @@ public class NewGameDialog : Gtk.Dialog {
 		set_size_request (420, 300);
 		resizable = false;
 		
-		var x_values = new Adjustment (4, 4, 7, 1, 1, 1);
+		var x_values = new Adjustment (4, 4, 8, 1, 1, 1);
 		var y_values = new Adjustment (4, 4, 8, 1, 1, 1);
 		var dificulty_values = new Adjustment (3, 1, 51, 1, 1, 1);
 			 	
@@ -316,7 +318,7 @@ public class SolveButton : Button {
 		//TODO Set CSS Class
 		
 		this.clicked.connect (() => {
-			//TODO: Connect to C Function
+			
 		});
 	}
 }

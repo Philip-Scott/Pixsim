@@ -1,3 +1,4 @@
+
 .close {
 	color: @text_color;
 	text-shadow: 0 1px alpha (#fff, 0.6);
@@ -54,8 +55,8 @@
 	color: mix (@bg_color, #ccc, 1);
 }
 
-.header-bar  {
- text-shadow: 0 1px alpha (#000, 0.4);
+.header-bar-dark  {
+    text-shadow: 0 1px alpha (#000, 0.4);
     icon-shadow: 0 1px alpha (#000, 0.4);
 
     background-image: linear-gradient(to bottom,
@@ -71,6 +72,5 @@
                 inset 0 -1px 0 0 alpha (#fff, 0.01),
                 0 1px 0 0 alpha (#fff, 0.05);
 
-   color: @text_color;
+   	color: mix (@bg_color, #ccc, 1);
 }
-
