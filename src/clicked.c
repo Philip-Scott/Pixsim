@@ -14,6 +14,7 @@ struct Pila* solvek = NULL;
 
 int pasos = 0;
 int movimientos = 0;
+int lose = 0;
 //*(matrix + j + x * i) //Go to (i,j)
 //User clicked on (j,k) 
 
@@ -33,6 +34,23 @@ int setup (int *set_matrix, int set_y, int set_x) {
 	movimientos = 0;	
 	printf ("C DEBUG: X = %d, Y = %d,\n", x, y);
  	return 0;
+}
+
+//Win or lose the game
+int win(){
+	int k,z;
+	for(k = 0; i < x; i++){
+		for(z = 0; j < y; j++){
+			if(*(matrix + j + x * k) = 0)
+				lose = 1;
+			
+		}
+	}
+	if(lose = 1)
+		return 0;
+	
+	else
+		return 1;
 }
 
 //Setup game
