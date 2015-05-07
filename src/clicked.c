@@ -37,21 +37,16 @@ int setup (int *set_matrix, int set_y, int set_x) {
 }
 
 //Win or lose the game
-/*int win(){
-	int k,z;
-	for(k = 0; i < x; i++){
-		for(z = 0; j < y; j++){
-			if(*(matrix + j + x * k) = 0)
-				lose = 1;
-			
-		}
-	}
-	if(lose = 1)
-		return 0;
-	
-	else
-		return 1;
-}*/
+int win() {
+	int j,i;
+	for(i = 0; i < x; i++){
+	for(j = 0; j < y; j++){
+		if(*(matrix + j + x * i) == 0)
+			return 0;	
+	}}
+	printf ("You won!\n");
+	return 1;
+}
 
 //Setup game
 int populate (int moves) {

@@ -4,6 +4,7 @@ using Granite.Services;
 
 extern int setup(int[,] a);
 extern int populate (int dificulty);
+extern int win ();
 
 namespace Pixsim {
 public int[,] Value_Matrix;
@@ -51,6 +52,8 @@ public class Board : Grid {
 		this.Update.connect (() => {
 			if (user_moves != 0) solve_button.label = "Reset";
 			else solve_button.label = "Solve";
+			theme ();
+			
 		});
 		
 		setup (Value_Matrix); 
@@ -58,5 +61,12 @@ public class Board : Grid {
  		Update ();
 		this.show_all ();
 	}
-
+	
+	private void theme () {
+		if (win () == 1) {
+			this.get_style_context ().add_class ("lighton");
+		} else {
+			this.get_style_context ().remove_class ("lighton");
+		}
+	}
 }}

@@ -15,6 +15,9 @@
     border-radius: 5px 50px 50px 5px;
 
 }
+.board {
+	transition: all 100ms ease-out;
+}
 
 .counter {
 	font: droid sans 11px; 
