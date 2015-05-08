@@ -190,6 +190,7 @@ public class NewGameDialog : Gtk.Dialog {
 		start.clicked.connect (() => {
 		    new_game (setup_size.active + 3 ,setup_size.active + 3 , (setup_size.active + 1) * ((int) (dificulty_values.value ) + 1)   );
 		    this.hide ();
+       		solve_button.set_sensitive (true);
 		});
 		
 	 	var grid = new Grid ();
@@ -239,6 +240,7 @@ public class NewGameButton : Grid {
 		
 		this.new_game_button.clicked.connect (() => {
     		new_game_menu.new_game (board.x, board.y, board.dificulty);
+			solve_button.set_sensitive (true);
 		});
 		
 		headerbar.pack_start (this);
@@ -314,6 +316,10 @@ public class HbButton : Button {
 				moves.change_generated (solve ());
 				board.Update ();
 				this.label = "Solve";
+				if (moves.gen_steps.label.to_int () == 0) {
+					this.set_sensitive (false);
+				}
+				
 			} else {
 				reset ();
 				moves.change_user (0);
