@@ -1,3 +1,3 @@
 # Pixsim
 
-![Screenshot](UI.png)
+![Screenshot](UIPic.png)
