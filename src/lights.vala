@@ -11,8 +11,8 @@ public class Light : Gtk.Button {
 	private bool active;
 	
 	public Light (int set_x, int set_y, Board board) {
-		int x = set_x;
-		int y = set_y;
+		x = set_x;
+		y = set_y;
 		set_size_request (90,90);
 		this.can_focus = false;
 		this.clicked.connect (() => {

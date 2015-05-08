@@ -140,11 +140,10 @@ public class About : Gtk.Popover {
  //New device dialog
 public class NewGameDialog : Gtk.Dialog {
 	public signal void new_game (int x, int y, int dificulty);
-	public Scale setup_x;
-	public Scale setup_y;
+	public ComboBoxText setup_size;
 	public Scale dificulty;
 	public Gtk.Button start;
-	
+
 	protected override bool delete_event (Gdk.EventAny event) {
 		this.hide(); 	
 		return true;		
@@ -155,40 +154,41 @@ public class NewGameDialog : Gtk.Dialog {
 		this.set_border_width (12);
 		this.set_modal (true);
 		var title 			= new Label ("<b>New Game: </b>");
-		var width_label 	= new Label ("Width: ");
-		var hight_label 	= new Label ("Hight: ");
-		var dificulty_label = new Label ("Dificulty");
+		var width_label 	= new Label ("Size: ");
+
+		var dificulty_label = new Label ("Dificulty:");
 		
 		title.set_use_markup (true);
 		title.xalign = 0;
 		width_label.xalign = 0;
-		hight_label.xalign = 0;
+		dificulty_label.xalign = 0;
 		
 		set_keep_above (true);
 		set_size_request (420, 300);
 		resizable = false;
 		
-		var x_values = new Adjustment (4, 4, 8, 1, 1, 1);
-		var y_values = new Adjustment (4, 4, 8, 1, 1, 1);
-		var dificulty_values = new Adjustment (3, 1, 51, 1, 1, 1);
+		var dificulty_values = new Adjustment (3, 1, 6, 1, 1, 1);
 			 	
-	 	setup_x = new Scale (Orientation.HORIZONTAL, x_values);	
-        setup_y = new Scale (Orientation.HORIZONTAL, y_values);
+	 	setup_size = new ComboBoxText ();
+	 	
+	 	setup_size.append_text ("Tiny"); //3
+	 	setup_size.append_text ("Small"); //4
+	 	setup_size.append_text ("Medium"); //5
+	 	setup_size.append_text ("Large"); //6
+	 	setup_size.append_text ("Huge"); //7
+	 	setup_size.active = 0;
+	 	
         dificulty = new Scale (Orientation.HORIZONTAL, dificulty_values);
         
-        setup_x.set_digits (0);
-        setup_y.set_digits (0);
         dificulty.set_digits (0);
         
-        setup_y.set_size_request (10,40);
-        setup_x.set_value_pos (PositionType.LEFT);
-        setup_y.set_value_pos (PositionType.LEFT);
+        setup_size.set_size_request (10,40);
         dificulty.set_value_pos (PositionType.LEFT);
         
 		start = new Button.with_label ("Start");
 		
 		start.clicked.connect (() => {
-		    new_game ((int) x_values.value,(int) y_values.value, (int) dificulty_values.value);
+		    new_game (setup_size.active + 3 ,setup_size.active + 3 , (setup_size.active + 1) * ((int) (dificulty_values.value ) + 1)   );
 		    this.hide ();
 		});
 		
@@ -196,9 +196,7 @@ public class NewGameDialog : Gtk.Dialog {
         
 	 	grid.attach (title,			0,  0,  1,  1);
 		grid.attach (width_label, 	0,	1, 	1,	1);
-		grid.attach (setup_x,  		1,	1, 	2,	1);
-		grid.attach (hight_label, 	0,	2, 	1,	1);
-		grid.attach (setup_y,  		1,	2, 	2,	1);
+		grid.attach (setup_size,	1,	1, 	2,	1);
 		grid.attach (dificulty_label,0, 3,  1,  1);
 		grid.attach (dificulty,  	1,	3, 	2,	1);
         grid.attach (start,         2,  4,  1,  1);
@@ -218,6 +216,7 @@ public class NewGameButton : Grid {
 	public Button setup_button;
 		
 	public NewGameButton () {
+		
 		this.get_style_context ().add_class ("linked");
 		this.set_orientation (Orientation.HORIZONTAL);
 		var arrow = new Arrow (ArrowType.DOWN, ShadowType.NONE);
@@ -230,6 +229,9 @@ public class NewGameButton : Grid {
 		
 		this.add (new_game_button);
 		this.add (setup_button);
+		
+		new_game_button.can_focus = false;
+		setup_button.can_focus = false;
 		
 		this.setup_button.clicked.connect (() => {
 			new_game_menu.visible = true;
@@ -308,29 +310,21 @@ public class HbButton : Button {
 		this.commons ("Solve ");
 		this.get_style_context ().add_class (@"button-right");
 		this.clicked.connect (() => {
-			if (board.user_moves == 0 && moves.gen_steps.label.to_int () > 0)  {
+			if (moves.user_steps.label.to_int () == 0 && moves.gen_steps.label.to_int () > 0)  {
 				moves.change_generated (solve ());
 				board.Update ();
+				this.label = "Solve";
 			} else {
 				reset ();
 				moves.change_user (0);
 				board.Update ();
+				this.label = "Solve";
 			}
 			 
 		});
 	}
 }
 
-public class SolveButton : Button {
-	public SolveButton () {
-		this.label = "Solve";
-		//TODO Set CSS Class
-		
-		this.clicked.connect (() => {
-			
-		});
-	}
-}
 
 public static int main(string[] args) {
     Gtk.init(ref args);
